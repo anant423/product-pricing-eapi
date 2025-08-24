@@ -1,0 +1,7 @@
+api:
+ name: "product-pricing-eapi"
+ id: "20486644"
+ clientId: "![obuZsa5h1u/MrJSBHXXiCyJfpLuc0n7ytb7BVkK6LiwEWM/PjPkmIw==]"
+ clientSecret: "![+fMFTGU2mti8qbjFL5SMV43BCMVS9XCRJF4ggSK0WlkDE+67l7r37Q==]"
+ retries: "2"
+ frequency: "30000"

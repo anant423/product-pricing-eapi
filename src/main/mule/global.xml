@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<global-property doc:name="Global Property" doc:id="a0fef4d6-f098-4c29-8c8c-d9b2add41f28" name="env" value="dev" />
+	<global-property doc:name="Global Property" doc:id="d748e5d1-a7d2-4af6-88a6-e8ad92f9dfd5" name="encrypt.key" value="ANANT12345678" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="31ee20a0-8400-4396-a8b9-6d5d6318a602" file="config-${env}-secure-properties.yaml" key="${encrypt.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<api-gateway:autodiscovery apiId="${secure::api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="48eaa66d-5145-4d20-900f-e5e07c3d0911" flowRef="api-main"/>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="6005e65a-e4b0-4a1c-91ac-e41e2fcc0629" basePath="/product">
+		<http:request-connection host="localhost" port="8081" >
+			<reconnection >
+				<reconnect frequency="${secure::api.frequency}" count="${secure::api.retries}" />
+			</reconnection>
+		</http:request-connection>
+	</http:request-config>
+</mule>
+
+	

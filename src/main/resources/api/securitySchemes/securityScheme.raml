@@ -1,0 +1,16 @@
+#%RAML 1.0 SecurityScheme
+type: x-auth-custom
+description: Client Id and Secret based security
+describedBy:
+  headers:
+    clientId:
+      description: Client ID for the respective consumer application.
+      type: string
+    clientSecret:
+      description: Client Secret for the respective consumer application.
+      type: string
+  responses:
+    401:
+      description: "401 - Unauthorized Access"
+    429:
+      description: "429 - Too Many Request"

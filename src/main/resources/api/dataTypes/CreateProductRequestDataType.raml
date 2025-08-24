@@ -1,0 +1,50 @@
+#%RAML 1.0 DataType
+type: array
+displayName: Product Payload Array
+description: Array of product payload objects
+
+items:
+  type: object
+  additionalProperties: false
+  properties:
+    externalId:
+      type: string
+      required: true
+      minLength: 1
+      maxLength: 12
+      example: "132"
+
+    name:
+      type: string
+      required: true
+      minLength: 1
+      maxLength: 25
+      example: "Gold2 Whey"
+
+    productCode:
+      type: string
+      required: true
+      minLength: 1
+      maxLength: 25
+      example: "GW132"
+
+    description:
+      type: string
+      required: false
+      minLength: 0
+      maxLength: 300
+      example: "This is Gold2 Protein"
+
+    currencyCode:
+      type: string
+      required: true
+      minLength: 3
+      maxLength: 3
+      enum: [ USD, INR, AUD, EUR, CAD, GBP, JPY, CNY, RUB ]
+      example: "USD"
+
+    productPrice:
+      type: number
+      multipleOf: 0.01
+      required: true
+      example: 132

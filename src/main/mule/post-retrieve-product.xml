@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="post-retrieve-product-flow" doc:id="0ea8402b-61b7-4fb9-94d0-20120363ba9e" >
+		<logger level="INFO" doc:name="Transaction Start" doc:id="74370038-fb8e-49a0-ac06-6be95adb2d2c" message="Request received for retreiv product"/>
+		<flow-ref doc:name="post-retrieve-product-sub-flow" doc:id="ab722396-546b-47ae-9a7a-970b76f4ac57" name="post-retrieve-product-sub-flow"/>
+		<ee:transform doc:name="Response Payload" doc:id="db078dc7-ab8f-46ff-ad22-8175f5173f08" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Transaction End" doc:id="8b7cbd25-c94c-4d86-929e-8ae77abd0122" message="Response returned successfully"/>
+		<error-handler ref="eapi-error-handler" />
+	
+</flow>
+	<sub-flow name="post-retrieve-product-sub-flow" doc:id="c1efa9cc-86cc-4b86-b446-19619c6b61bc" >
+		<until-successful maxRetries="${secure::api.retries}" doc:name="Until Successful" doc:id="0a5d5f5c-a288-4684-8bf6-f3d335c4fd51" millisBetweenRetries="${secure::api.frequency}">
+			<http:request method="GET" doc:name="Invoke PAPI" doc:id="f8bdd29d-f6b7-470f-a2b6-a8ef61184164" config-ref="HTTP_Request_configuration" path="/retrieve">
+		<error-mapping sourceType="HTTP:CONNECTIVITY" targetType="EXT:CANT_INVOKE_BACKEND" />
+			<error-mapping sourceType="HTTP:INTERNAL_SERVER_ERROR" targetType="EXT:CANT_INVOKE_BACKEND" />
+			<error-mapping sourceType="HTTP:RETRY_EXHAUSTED" targetType="EXT:CANT_INVOKE_BACKEND" />
+			<error-mapping sourceType="HTTP:SERVICE_UNAVAILABLE" targetType="EXT:CANT_INVOKE_BACKEND" />
+			<error-mapping sourceType="HTTP:TIMEOUT" targetType="EXT:CANT_INVOKE_BACKEND" />
+			<http:headers><![CDATA[#[{
+	"clientId" : p('secure::api.clientId'),
+	"clientSecret": p('secure::api.clientSecret')
+}]]]></http:headers>
+		</http:request>
+		</until-successful>
+
+	</sub-flow>
+</mule>

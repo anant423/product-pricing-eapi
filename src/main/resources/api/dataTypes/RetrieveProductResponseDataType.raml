@@ -1,0 +1,56 @@
+#%RAML 1.0 DataType
+type: array
+displayName: Extended Product Payload Array
+description: Array of product objects including converted pricing information
+
+items:
+  type: object
+  additionalProperties: false
+  properties:
+    externalId:
+      type: string
+      required: true
+      maxLength: 12
+      example: "123"
+
+    name:
+      type: string
+      required: true
+      example: "Muscle Blaze"
+
+    productCode:
+      type: string
+      required: false
+      example: "MB123"
+
+    description:
+      type: string
+      required: false
+      example: "This is Muscle Blaze Protein"
+
+    type:
+      type: string
+      required: false
+      example: "Product2"
+
+    currencyCode:
+      type: string
+      required: true
+      enum: [ USD, INR, AUD, EUR, CAD, GBP, JPY, CNY, RUB ]
+      example: "EUR"
+
+    productPrice:
+      type: string
+      required: false
+      example: "123.0"
+
+    convertedPrice:
+      type: string
+      required: false
+      example: "142.63"
+
+    convertedCurrency:
+      type: string
+      required: false
+      enum: [ USD, INR, AUD, EUR, CAD, GBP, JPY, CNY, RUB ]
+      example: "USD"

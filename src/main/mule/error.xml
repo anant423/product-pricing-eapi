@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="eapi-error-handler" doc:id="67ce4044-0f53-4569-b0c9-99cc8795545a" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f807301c-eded-4a3d-8f78-e9dba154ba8a" type="EXT:CANT_INVOKE_BACKEND" when='#[(error.errorType.namespace ++ ":" ++ error.errorType.identifier)=="HTTP:RETRY_EXHAUSTED"]'>
+			<logger level="ERROR" doc:name="Log Error" doc:id="961b7811-8bc1-4aee-9056-97323a5de420" message='Error=#[error.description]'/>
+			<ee:transform doc:name="Error Payload" doc:id="c936463f-03f3-48ca-a04e-2f5307bf65d6" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"statusCode":500,
+	"error": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<raise-error doc:name="EXT:RETRY_EXHAUSTED" doc:id="6316981e-49d3-4549-88f5-260e80bdc8a8" type="EXT:RETRY_EXHAUSTED" description='#[error.description]'/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e83f8412-eb1a-4630-ab9e-ad62b3e1c385" type="EXT:CANT_INVOKE_BACKEND">
+			<logger level="ERROR" doc:name="Log Error" doc:id="58338e11-9776-4175-873b-83cfa22cabd0" message='Error=#[error.description]' />
+			<ee:transform doc:name="Error Payload" doc:id="0abf495d-177a-469d-83ef-83afbe7c5067">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"statusCode": error.statusCode,
+	"error": error.description
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<raise-error doc:name="EXT:ANY" doc:id="32572f97-5b61-42c8-8985-aa4a584e307b" type="EXT:ANY" description='#[error.description]' />
+		</on-error-propagate>
+	</error-handler>
+</mule>

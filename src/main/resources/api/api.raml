@@ -1,0 +1,117 @@
+#%RAML 1.0
+title: Product Pricing EAPI
+version: v1
+description: EAPI for Product Pricing APIs
+mediaType: application/json
+protocols: [HTTPS]
+traits:
+  errorResponse: !include traits/errorTrait.raml
+
+securitySchemes:
+  client-id-required: !include securitySchemes/securityScheme.raml
+securedBy: [client-id-required]
+
+/product:
+  /create:
+    displayName: Create Product in Salesforce
+    description: This  API is used to create a product in Salesforce.
+    post:
+      is: [errorResponse]
+      displayName: Create Product in Salesforce
+      description: This  API is used to create a product in Salesforce.
+      body:
+        application/json:
+          type: !include dataTypes/CreateProductRequestDataType.raml
+          example: !include examples/CreateProductRequestExample.raml
+      responses:
+        200:
+          description: "Successful response when the operation completes as expected."
+          headers:
+            Content-Type:
+              type: string
+              description: "Specifies the media type of the response body."
+              pattern: '^[a-zA-Z][a-zA-Z /,-]*$'
+              example: application/json
+          body:
+            application/json:
+              properties:
+                results:  !include dataTypes/CreateProductResponseDataType.raml
+              example: !include examples/CreateProductResponseExample.raml
+  /delete:
+    displayName: Delete Product in Salesforce
+    description: This  API is used to delete a product in Salesforce.
+    delete:
+      is: [errorResponse]
+      displayName: Create Product in Salesforce
+      description: This  API is used to create a product in Salesforce.
+      body:
+        application/json:
+          type: !include dataTypes/DeleteProductRequestDataType.raml
+          example: !include examples/DeleteProductRequestExample.raml
+      responses:
+        200:
+          description: "Successful response when the operation completes as expected."
+          headers:
+            Content-Type:
+              type: string
+              description: "Specifies the media type of the response body."
+              pattern: '^[a-zA-Z][a-zA-Z /,-]*$'
+              example: application/json
+          body:
+            application/json:
+              properties:
+                results:  !include dataTypes/DeleteProdcutResponseDataType.raml
+              example: !include examples/DeleteProductResponseExample.raml
+  /update:
+    displayName: Update Product in Salesforce
+    description: This  API is used to update a product in Salesforce.
+    patch:
+      is: [errorResponse]
+      displayName: Update Product in Salesforce
+      description: This  API is used to update a product in Salesforce.
+      body:
+        application/json:
+          type: !include dataTypes/UpdateProductRequestDataType.raml
+          example: !include examples/UpdateProductRequestExample.raml
+      responses:
+        200:
+          description: "Successful response when the operation completes as expected."
+          headers:
+            Content-Type:
+              type: string
+              description: "Specifies the media type of the response body."
+              pattern: '^[a-zA-Z][a-zA-Z /,-]*$'
+              example: application/json
+          body:
+            application/json:
+              properties:
+                results:  !include dataTypes/UpdateProductResponseDataType.raml
+              example: !include examples/UpdateProductResponseExample.raml
+  /retrieve:
+    displayName: Retrieve Product in Salesforce
+    description: This API is used to retrieve products from Salesforce.
+    get:
+      is: [errorResponse]
+      displayName: Retrieve Product in Salesforce
+      description: This API is used to retrieve products from Salesforce.
+      queryParameters:
+        currencyCode:
+          description: Currency code to filter products.
+          type: string
+          required: true
+          enum: [USD, INR, AUD, EUR, CAD, GBP, JPY, CNY, RUB]
+          example: USD
+      responses:
+        200:
+          description: Successful response when the operation completes as expected.
+          headers:
+            Content-Type:
+              type: string
+              description: Specifies the media type of the response body.
+              pattern: '^[a-zA-Z][a-zA-Z /,-]*$'
+              example: application/json
+          body:
+            application/json:
+              properties:
+                results: !include dataTypes/RetrieveProductResponseDataType.raml
+              example: !include examples/RetrieveProductResponseExample.raml
