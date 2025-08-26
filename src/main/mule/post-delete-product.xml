@@ -22,13 +22,14 @@ payload]]></ee:set-payload>
 </flow>
 	<sub-flow name="post-delete-product-sub-flow" doc:id="85027336-002b-4890-9f92-dd23332337bc" >
 		<until-successful maxRetries="${secure::api.retries}" doc:name="Until Successful" doc:id="fc74b33a-d3ef-4410-8b74-77d83c52cc05" millisBetweenRetries="${secure::api.frequency}">
-			<http:request method="GET" doc:name="Invoke PAPI" doc:id="566c2124-48b0-4aae-a23d-fa667ec9c678" config-ref="HTTP_Request_configuration" path="/delete">
+			<http:request method="DELETE" doc:name="Invoke PAPI" doc:id="566c2124-48b0-4aae-a23d-fa667ec9c678" config-ref="HTTPS_Request_configuration" path="${secure::api.deletePath}">
 		<error-mapping sourceType="HTTP:CONNECTIVITY" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:INTERNAL_SERVER_ERROR" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:RETRY_EXHAUSTED" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:SERVICE_UNAVAILABLE" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:TIMEOUT" targetType="EXT:CANT_INVOKE_BACKEND" />
-			<http:headers><![CDATA[#[{
+			<error-mapping sourceType="HTTP:NOT_FOUND" targetType="EXT:CANT_INVOKE_BACKEND" />
+				<http:headers><![CDATA[#[{
 	"clientId" : p('secure::api.clientId'),
 	"clientSecret": p('secure::api.clientSecret')
 }]]]></http:headers>

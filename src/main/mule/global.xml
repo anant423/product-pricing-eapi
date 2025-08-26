@@ -18,8 +18,8 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
     </http:listener-config>
     <apikit:config name="api-config" api="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
 	<api-gateway:autodiscovery apiId="${secure::api.id}" flowRef="api-main" doc:name="API Autodiscovery"/>
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="6005e65a-e4b0-4a1c-91ac-e41e2fcc0629" basePath="/product">
-		<http:request-connection host="localhost" port="8081" >
+	<http:request-config name="HTTPS_Request_configuration" doc:name="HTTP Request configuration" doc:id="6005e65a-e4b0-4a1c-91ac-e41e2fcc0629" basePath="${secure::api.basePath}" responseTimeout="${secure::api.timeout}">
+		<http:request-connection host="${secure::api.host}" protocol="HTTPS">
 			<reconnection >
 				<reconnect frequency="${secure::api.frequency}" count="${secure::api.retries}" />
 			</reconnection>

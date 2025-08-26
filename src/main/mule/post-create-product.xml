@@ -21,13 +21,14 @@ payload]]></ee:set-payload>
 	</flow>
 	<sub-flow name="post-create-product-sub-flow" doc:id="1d4a04d5-46ac-4a32-8c95-707d6710e39e" >
 		<until-successful maxRetries="${secure::api.retries}" doc:name="Until Successful" doc:id="70894ebb-1f06-4084-8216-6f6c4c6e4498" millisBetweenRetries="${secure::api.frequency}">
-			<http:request method="GET" doc:name="Invoke PAPI" doc:id="4a9c095b-7e4b-4796-8741-f4452772efd0" config-ref="HTTP_Request_configuration" path="/create">
+			<http:request method="POST" doc:name="Invoke PAPI" doc:id="4a9c095b-7e4b-4796-8741-f4452772efd0" config-ref="HTTPS_Request_configuration" path="${secure::api.createPath}">
 			<error-mapping sourceType="HTTP:CONNECTIVITY" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:INTERNAL_SERVER_ERROR" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:RETRY_EXHAUSTED" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:SERVICE_UNAVAILABLE" targetType="EXT:CANT_INVOKE_BACKEND" />
 			<error-mapping sourceType="HTTP:TIMEOUT" targetType="EXT:CANT_INVOKE_BACKEND" />
-			<http:headers><![CDATA[#[{
+			<error-mapping sourceType="HTTP:NOT_FOUND" targetType="EXT:CANT_INVOKE_BACKEND" />
+				<http:headers><![CDATA[#[{
 	"clientId" : p('secure::api.clientId'),
 	"clientSecret": p('secure::api.clientSecret')
 }]]]></http:headers>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="post-create-product-test-suite.xml" />
+	<munit:test name="post-create-product-test-suite-post-create-product-flow" doc:id="3a4009a2-d082-4ee7-a1cf-ce8012ad1d23" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="2732fbe0-ee69-446d-a471-9982fbf59b60" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke PAPI" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="4a9c095b-7e4b-4796-8741-f4452772efd0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payloads/responsePayload.json','application/json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="5010e7be-243b-490d-8759-90cf1aa45832" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payloads/requestPayload.json','application/json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post-create-product-flow" doc:id="e1b58b27-b004-4164-8499-f268b72b3c6f" name="post-create-product-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="08e74d1d-894b-40d8-b896-22580ea27e46" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="post-create-product-test-suite-post-delete-product-flow" doc:id="a72c9682-1ae3-4397-8c71-3ca58213c0cd" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="565d0fe1-d04e-415d-90ed-b3e3e20bd108" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke PAPI" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="566c2124-48b0-4aae-a23d-fa667ec9c678" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payloads/responsePayload.json','application/json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="c2776381-3e6a-4dc1-acde-4ae44fe2a97d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payloads/requestPayload.json','application/json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post-delete-product-flow" doc:id="8723b107-59f1-4c8c-8ce2-9c0db3627142" name="post-delete-product-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="6a061301-72d0-4073-9b86-581e5531e444" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="post-create-product-test-suite-post-retrieve-product-flow" doc:id="41a0dbba-eb78-4004-a836-b6c0980fa5b6" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="6189f562-91b4-4034-8218-8f872b0dd9db" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke PAPI" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="f8bdd29d-f6b7-470f-a2b6-a8ef61184164" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payloads/responsePayload.json','application/json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="258d9793-752c-4bce-b77e-f08a51f6423b" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payloads/requestPayload.json','application/json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post-retrieve-product-flow" doc:id="0ca4b996-f764-4959-bad5-20c4f9bed0da" name="post-retrieve-product-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="4c0bffa8-725b-4e63-8c1c-1c953458085d" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="post-create-product-test-suite-post-update-product-flow" doc:id="af470445-5efe-4793-bece-919deda60611" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f00bc609-5686-43f4-9cc4-c5ff47f63b3f" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke PAPI" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="47019aff-8554-4645-9cc5-cee0768ec409" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://payloads/responsePayload.json','application/json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="c58b5464-3d09-48f7-a498-ff35a86c5f4f" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payloads/requestPayload.json','application/json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post-update-product-flow" doc:id="f3306182-66da-426a-b0fd-2ab0c7def9e3" name="post-update-product-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="6e67c583-d633-478b-af29-e502998d8b42" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	
+</munit:test>
+<munit:test name="post-product-test-suite-error-ext-retry-exhausted-flow" doc:id="90a720c6-e70a-47a9-a6bf-88cb15d9216e" description="Test" expectedErrorType="EXT:RETRY_EXHAUSTED">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="47b492d9-c466-43e4-b827-a432f794d814" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Invoke PAPI" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="47019aff-8554-4645-9cc5-cee0768ec409" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="HTTP:CONNECTIVITY" />
+				</munit-tools:then-return>
+
+			
+
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="8937de67-8fd7-4e86-98b5-c4a981eecb83" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://payloads/requestPayload.json','application/json')]" mediaType="application/json" />
+
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to post-update-product-flow" doc:id="c0a0fa71-e905-4a00-ae8c-ef03116e6a11" name="post-update-product-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="cd23aaec-2038-425c-a528-0b27a88a53ca" is="#[MunitTools::notNullValue()]" expression="#[payload]"/>
+		</munit:validation>
+	
+</munit:test>
+
+
+</mule>
